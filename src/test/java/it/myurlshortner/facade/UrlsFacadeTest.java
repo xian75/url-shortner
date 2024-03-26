@@ -27,7 +27,7 @@ import org.mockito.Spy;
 public class UrlsFacadeTest {
 
     private static final long ID = 12345L;
-    private static final String SHORT_URL = "dnh";
+    private static final String SHORT_URL = "hnd";
     private static final String LONG_URL = "https://www.payroc.com/";
 
     @Spy
@@ -65,7 +65,7 @@ public class UrlsFacadeTest {
 
     @Test
     public void given_unexistant_shortUrl_When_get_Then_return_null() throws DaoException, FacadeException {
-        Assert.assertNull(facade.get(SHORT_URL + "a"));
+        Assert.assertNull(facade.get("a" + SHORT_URL));
     }
 
     @Test

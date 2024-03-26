@@ -24,6 +24,8 @@ import javax.inject.Inject;
 @Stateless(name = "myurlshortner/facade/urls", mappedName = "myurlshortner/facade/urls")
 public class UrlsFacade implements IUrlsFacade {
 
+    private static final char map[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".toCharArray();
+
     @Inject
     protected IUrlsDao dao;
 
@@ -59,13 +61,12 @@ public class UrlsFacade implements IUrlsFacade {
         if (n == null) {
             return null;
         }
-        char map[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".toCharArray();
         StringBuffer shorturl = new StringBuffer();
         while (n > 0) {
             shorturl.append(map[(int) (n % 62)]);
             n = n / 62;
         }
-        return shorturl.reverse().toString();
+        return shorturl.toString();
     }
 
     private Long shortURLtoID(String shortURL) {
@@ -73,18 +74,16 @@ public class UrlsFacade implements IUrlsFacade {
             return null;
         }
         long id = 0;
-        for (int i = 0; i < shortURL.length(); i++) {
-            if ('a' <= shortURL.charAt(i)
-                    && shortURL.charAt(i) <= 'z') {
-                id = id * 62 + shortURL.charAt(i) - 'a';
+        for (int i = shortURL.length() - 1; i >= 0; i--) {
+            char x = shortURL.charAt(i);
+            if ('a' <= x && x <= 'z') {
+                id = id * 62 + x - 'a';
             }
-            if ('A' <= shortURL.charAt(i)
-                    && shortURL.charAt(i) <= 'Z') {
-                id = id * 62 + shortURL.charAt(i) - 'A' + 26;
+            if ('A' <= x && x <= 'Z') {
+                id = id * 62 + x - 'A' + 26;
             }
-            if ('0' <= shortURL.charAt(i)
-                    && shortURL.charAt(i) <= '9') {
-                id = id * 62 + shortURL.charAt(i) - '0' + 52;
+            if ('0' <= x && x <= '9') {
+                id = id * 62 + x - '0' + 52;
             }
         }
         return id;
