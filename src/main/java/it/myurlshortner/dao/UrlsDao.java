@@ -4,29 +4,26 @@
  */
 package it.myurlshortner.dao;
 
-import it.myurlshortner.dao.interfaces.IUrlsDao;
 import it.myurlshortner.entity.Url;
 import it.myurlshortner.exception.DaoException;
-import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
+import javax.enterprise.context.ApplicationScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
+import javax.transaction.Transactional;
 
 /**
  * Dao for creating and loading Urls
  *
  * @author NATCRI
  */
-@Stateless(name = "myurlshortner/dao/urls", mappedName = "myurlshortner/dao/urls")
-public class UrlsDao implements IUrlsDao {
+@ApplicationScoped
+public class UrlsDao {
 
     @PersistenceContext(unitName = "urlShortnerPU")
     protected EntityManager em;
 
-    @Override
-    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    @Transactional(Transactional.TxType.NOT_SUPPORTED)
     public Url get(Long id) throws DaoException {
         try {
             return em.find(Url.class, id);
@@ -35,7 +32,6 @@ public class UrlsDao implements IUrlsDao {
         }
     }
 
-    @Override
     public Url create(Url url) throws DaoException {
         try {
             em.persist(url);

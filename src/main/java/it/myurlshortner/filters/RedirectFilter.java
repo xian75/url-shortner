@@ -5,7 +5,7 @@
 package it.myurlshortner.filters;
 
 import it.myurlshortner.exception.FacadeException;
-import it.myurlshortner.facade.interfaces.IUrlsFacade;
+import it.myurlshortner.facade.UrlsFacade;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,7 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 public class RedirectFilter implements Filter {
 
     @Inject
-    private IUrlsFacade facade;
+    private UrlsFacade facade;
 
     /**
      *

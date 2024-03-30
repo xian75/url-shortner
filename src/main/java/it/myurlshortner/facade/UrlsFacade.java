@@ -4,15 +4,14 @@
  */
 package it.myurlshortner.facade;
 
-import it.myurlshortner.dao.interfaces.IUrlsDao;
+import it.myurlshortner.dao.UrlsDao;
 import it.myurlshortner.entity.Url;
 import it.myurlshortner.exception.DaoException;
 import it.myurlshortner.exception.FacadeException;
-import it.myurlshortner.facade.interfaces.IUrlsFacade;
-import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.transaction.Transactional;
+import static javax.transaction.Transactional.TxType;
 
 /**
  * Facade for reading/writing Urls with Base62 encoding/decoding. For Base62
@@ -21,16 +20,15 @@ import javax.inject.Inject;
  *
  * @author NATCRI
  */
-@Stateless(name = "myurlshortner/facade/urls", mappedName = "myurlshortner/facade/urls")
-public class UrlsFacade implements IUrlsFacade {
+@ApplicationScoped
+public class UrlsFacade {
 
     private static final char map[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".toCharArray();
 
     @Inject
-    protected IUrlsDao dao;
+    protected UrlsDao dao;
 
-    @Override
-    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    @Transactional(TxType.NOT_SUPPORTED)
     public String get(String shortUrl) throws FacadeException {
         try {
             Url url = dao.get(shortURLtoID(shortUrl));
@@ -40,7 +38,7 @@ public class UrlsFacade implements IUrlsFacade {
         }
     }
 
-    @Override
+    @Transactional
     public String set(String longUrl) throws FacadeException {
         try {
             Url url = dao.create(getNewUrl(longUrl));

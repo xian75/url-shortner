@@ -1,7 +1,7 @@
 package it.myurlshortner.resources;
 
 import it.myurlshortner.exception.FacadeException;
-import it.myurlshortner.facade.interfaces.IUrlsFacade;
+import it.myurlshortner.facade.UrlsFacade;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.inject.Inject;
@@ -24,7 +24,7 @@ import javax.ws.rs.core.Response.Status;
 public class UrlsResource {
 
     @Inject
-    protected IUrlsFacade facade;
+    protected UrlsFacade facade;
 
     /**
      * Get long url by its short url
